@@ -1,0 +1,114 @@
+# C语言
+
+### 文件操作
+```c
+//单个文件：
+freopen("in.txt","r",stdin);
+freopen("out.txt","w",stdout);
+//多个文件：
+FILE* out=fopen("out.txt","w");//返回指针，失败NULL
+fflush(FILE*);//清空缓存区
+fclose(FILE*);//成功返0，失败返EOF。会先fflush
+feof(FILE*);//结尾返非0，还有就返0
+fgetc(),fputc(),fgets(),fputs(),fscanf(),fprintf();//第一个参数为FILE*即可
+//块存储：
+fread(void*,size_t size,size_t num,FILE*);//返回读入的元素个数
+fwrite(void*,size_t size,size_t num,FILE*);
+//文件随机访问：
+fseek(FILE*,long step,int origin);//移动FILE*指向
+rewind(FILE*);//移至开头
+ftell(FILE*);//当前位置
+//出错检测
+ferror(FILE*);//正常返非0，出错返0
+clearerr(FILE*);//错误标志归零（rewind、输入输出也可以）
+```
+| 常量     | 值   | 含义       |
+| -------- | ---- | ---------- |
+| SEEK_SET | 0    | 从前往后   |
+| SEEK_CUR | 1    | 从当前往后 |
+| SEEK_END | 2    | 从后往前   |
+
+
+
+### main的参数
+
+```c
+main(int argc, char* argv[])
+//argv[]={"str1","str2"}
+```
+### typedef数组
+
+```c
+typedef char Name[20];
+Name a,b;
+//same as
+char a[20],b[20];
+```
+
+### 位域
+
+```c
+struct Bit{
+	unsigned a:2;
+	unsigned  :2;//占位，跳过2位
+	unsigned  :0;//占位，填满当前字节
+};
+```
+
+# STL
+
+### sort (algorithm)
+
+```cpp
+sort(a+n1,a+n2,my());//from a[n1] to a[n2-1]
+```
+
+现成的比较函数
+
+| 名称          | 功能描述 |
+| ------------- | -------- |
+| equal_to      | 相等     |
+| not_equal_to  | 不相等   |
+| less          | 小于     |
+| greater       | 大于     |
+| less_equal    | 小于等于 |
+| greater_equal | 大于等于 |
+
+用法
+
+```cpp
+greater<int>()
+```
+
+也可以自定义比较函数
+
+```cpp
+struct my{
+    bool operator()(const T & a, const T & b)const{
+        //a必须在b前面，则ture
+        //相等属于false的情况
+    }
+};
+```
+
+
+
+### 二分查找 (algorithm)
+
+```cpp
+binary_search(a+n1,a+n2,value,my());//ture(找到)
+//"找到"是指a<value||a>value ==false
+```
+```cpp
+T* lower_bound(a+n1,a+n2,value,my());//返回值指向第一个>=value的元素，找不到就指向a[n2]
+// 1    3    3    3    5
+//a[0] a[1] a[2] a[3] a[4]
+//假如搜索3,返回值指向a[1]
+//假如搜索4,返回值指向a[4]
+```
+
+```cpp
+T* upper_bound(a+n1,a+n2,value,my());//返回值指向第一个>value的元素，找不到就指向a[n2]
+//在上一个案例中，假如搜索3,返回值指向a[4]
+```
+
