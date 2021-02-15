@@ -28,8 +28,6 @@ clearerr(FILE*);//错误标志归零（rewind、输入输出也可以）
 | SEEK_CUR | 1    | 从当前往后 |
 | SEEK_END | 2    | 从后往前   |
 
-
-
 ### main的参数
 
 ```c
@@ -80,7 +78,7 @@ sort(a+n1,a+n2,my());//from a[n1] to a[n2-1]
 greater<int>()
 ```
 
-也可以自定义比较函数
+也可自定义比较函数
 
 ```cpp
 struct my{
@@ -110,5 +108,63 @@ T* lower_bound(a+n1,a+n2,value,my());//返回值指向第一个>=value的元素�
 ```cpp
 T* upper_bound(a+n1,a+n2,value,my());//返回值指向第一个>value的元素，找不到就指向a[n2]
 //在上一个案例中，假如搜索3,返回值指向a[4]
+```
+
+### 平衡二叉树 (set)
+
+##### multiset (可以重复)
+
+```cpp
+multiset<int> a;
+multiset<int,my> a;//自定义排序规则
+multiset<int>::iterator i;//迭代器
+```
+增
+```cpp
+a.insert(in);
+```
+顺序读取
+```cpp
+for(i=a.begin();i!=a.end();i++)
+//不可比较大小、加减(只可++/--).end()指向最后元素的后面
+    cout<<*i<<",";	//类似指针
+```
+查
+```cpp
+i=a.find(value);//返回迭代器，找不到就返回a.end()
+i=a.lower_bound(value);//i前面的元素都在value前面
+i=a.upper_bound(value);//i及其后面的元素都在value后面
+```
+删
+```cpp
+a.erase(i);
+```
+
+##### set (集合,不重复)
+
+```cpp
+set<int> a;
+pair<set<int>::iterator, bool> result=a.insert(in);
+//result.second表示插入是否成功
+a.size();//个数
+```
+
+pair模板
+
+```cpp
+pair<T1,T2>;
+//same as
+struct{
+    T1 first;
+    T2 second;
+};
+```
+
+### multimap (map)
+
+元素类型为pair<T1,T2>,T1 first为键,T2 second为值.按first排序
+
+```cpp
+multimap<T1,T2> a;
 ```
 
