@@ -160,7 +160,20 @@ struct{
 };
 ```
 
-### multimap (map)
+```cpp
+p=make_pair(a,b);
+//same as
+struct{
+    T1 first;
+    T2 second;
+}p;
+p.first=a;
+p.second=b;
+```
+
+### 映射 (map)
+
+##### multimap
 
 元素类型为pair<T1,T2>,T1 first为键,T2 second为值.按first排序
 
@@ -168,3 +181,15 @@ struct{
 multimap<T1,T2> a;
 ```
 
+与multiset一样,有begin、end、insert、find、lower_bound、upper_bound函数，有迭代器
+
+##### map (不能重复)
+
+```cpp
+map<string,int> m;
+m.insert(make_pair("alice",89));
+cout<<m["Alice"];//可以直接把first当下标,结果是second
+m["Bob"]=98;//可以读也可以写
+```
+
+类似set,insert()有返回值,其.second表明是否成功
