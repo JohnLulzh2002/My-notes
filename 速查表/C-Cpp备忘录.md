@@ -53,12 +53,80 @@ struct Bit{
 };
 ```
 
+# C++
+
+### 比C语言新增的零碎用法
+
+##### 引用
+
+```cpp
+int&a=b;
+```
+
+##### 重载函数
+
+##### 缺省参数
+
+注意重载和缺省同时用时，可能产生二义性，编译出错
+
+### 动态内存分配
+
+```cpp
+int*a=new int;
+int*b=new int[10];
+delete a;
+delete[]b;
+```
+
+### 类的定义
+
+如果先声明后定义，格式如下
+
+```cpp
+class A{
+    public:
+    int b();
+    int c(int);
+};
+int A::b()
+{return 0;}
+int A::c(int n)
+{return n;}
+```
+
+成员有3种访问范围：
+
+1. public
+2. private
+3. protected
+
+不加关键字，就默认private
+
+可以访问同类其他对象的private成员
+
+```cpp
+class A{
+    private:
+		int n;
+	public:
+		void setn(int t){n=t;}
+		void avg(A&b,A&c){n=(b.n+c.n)/2;}
+		void out(){cout<<n;}
+};
+A d,e,f;
+d.setn(1);e.setn(3);
+f.avg(d,e);
+f.out();
+```
+
+
+
 # STL
 
 ### sort (algorithm)
 
 ```cpp
-sort(a+n1,a+n2,my());//from a[n1] to a[n2-1]
+sort(a+n1,a+n2,cmp());//from a[n1] to a[n2-1]
 ```
 
 现成的比较函数
@@ -81,7 +149,7 @@ greater<int>()
 也可自定义比较函数
 
 ```cpp
-struct my{
+struct cmp{
     bool operator()(const T & a, const T & b)const{
         //a必须在b前面，则ture
         //相等属于false的情况
@@ -94,11 +162,11 @@ struct my{
 ### 二分查找 (algorithm)
 
 ```cpp
-binary_search(a+n1,a+n2,value,my());//ture(找到)
+binary_search(a+n1,a+n2,value,cmp());//ture(找到)
 //"找到"是指a<value||a>value ==false
 ```
 ```cpp
-T* lower_bound(a+n1,a+n2,value,my());//返回值指向第一个>=value的元素，找不到就指向a[n2]
+T* lower_bound(a+n1,a+n2,value,cmp());//返回值指向第一个>=value的元素，找不到就指向a[n2]
 // 1    3    3    3    5
 //a[0] a[1] a[2] a[3] a[4]
 //假如搜索3,返回值指向a[1]
@@ -106,7 +174,7 @@ T* lower_bound(a+n1,a+n2,value,my());//返回值指向第一个>=value的元素�
 ```
 
 ```cpp
-T* upper_bound(a+n1,a+n2,value,my());//返回值指向第一个>value的元素，找不到就指向a[n2]
+T* upper_bound(a+n1,a+n2,value,cmp());//返回值指向第一个>value的元素，找不到就指向a[n2]
 //在上一个案例中，假如搜索3,返回值指向a[4]
 ```
 
@@ -116,7 +184,7 @@ T* upper_bound(a+n1,a+n2,value,my());//返回值指向第一个>value的元素�
 
 ```cpp
 multiset<int> a;
-multiset<int,my> a;//自定义排序规则
+multiset<int,cmp> a;//自定义排序规则
 multiset<int>::iterator i;//迭代器
 ```
 增
