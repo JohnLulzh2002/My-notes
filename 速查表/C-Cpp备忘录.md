@@ -65,6 +65,8 @@ int&a=b;
 
 ##### 重载函数
 
+同名不同参数
+
 ##### 缺省参数
 
 注意重载和缺省同时用时，可能产生二义性，编译出错
@@ -84,7 +86,7 @@ delete[]b;
 
 ```cpp
 class A{
-    public:
+public:
     int b();
     int c(int);
 };
@@ -106,12 +108,12 @@ int A::c(int n)
 
 ```cpp
 class A{
-    private:
-		int n;
-	public:
-		void setn(int t){n=t;}
-		void avg(A&b,A&c){n=(b.n+c.n)/2;}
-		void out(){cout<<n;}
+private:
+    int n;
+public:
+    void setn(int t){n=t;}
+    void avg(A&b,A&c){n=(b.n+c.n)/2;}
+    void out(){cout<<n;}
 };
 A d,e,f;
 d.setn(1);e.setn(3);
@@ -126,12 +128,11 @@ f.out();
 ```cpp
 class A{
     int t;
-    public:
-    	A();
+public:
+    A();
 };
-A::A(){
-    t=n;
-}
+A::A()
+{t=n;}
 ```
 
 如果构造函数有参数，新建对象时就必须带参数
@@ -148,7 +149,7 @@ A* p=new A(4);
 
 ```cpp
 class A{
-    public:
+public:
     A(int n){}
     A(int n,int m){}
 }
@@ -182,7 +183,30 @@ A f;
 f=a;//不调用复制构造函数，就是简单复制
 ```
 
+##### 类型转换构造函数
 
+一个参数的构造函数.赋值时会新建一个临时对象,再复制.
+
+```cpp
+A:A(int n);
+A b=1;	//调用构造函数
+b=2;	//调用类型转换构造函数
+```
+
+##### 析构函数
+
+销毁对象.主要是释放动态内存分配的空间.
+
+delete和生命周期结束时被调用
+
+```cpp
+class A{
+    int *p;
+public:
+    A() {p=new int[10];}
+    ~A(){delete[]p;}
+}
+```
 
 # STL
 
