@@ -1,5 +1,5 @@
 |编号|小写|大写|LaTeX形式|
-|-|
+|-|-|-|-|
 |1|$\alpha$|A|\alpha A|
 |2|$\beta$|B|\beta B|
 |3|$\gamma$|$\Gamma$|\gamma \Gamma|

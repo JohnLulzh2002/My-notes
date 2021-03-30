@@ -348,3 +348,50 @@ m["Bob"]=98;//可以读也可以写
 ```
 
 类似set,insert()有返回值,其.second表明是否成功
+
+### 变长数组 (vector)
+
+作函数参数时，必须用引用
+
+```cpp
+vector<int> v;
+vector<int> vv(maxSize,defaultValue);
+multiset<int>::iterator it;
+
+int a[]={1,2,3,4,5};
+vector<int> va(i+2,i+4);
+```
+
+增
+
+
+```cpp
+v.push_back(a);
+v.insert(v.begin()+2);
+```
+
+删
+
+```cpp
+v.erase(v.begin()+2);
+v.erase(v.begin()+2,v.begin()+4);
+v.pop_back()
+v.clear();
+```
+
+查
+
+```cpp
+v.size();//个数
+cout<< v[1] <<endl;
+for(it=v.begin();it!=v.end();it++)
+    cout<<*it<<endl;
+```
+
+改 (algorithm)
+
+```cpp
+#include<algorithm>
+reverse(v.begin(),v.end());
+sort(v.begin(),v.end());
+```
