@@ -244,7 +244,28 @@ struct cmp{
 };
 ```
 
+### 全排列 (algorithm)
 
+```cpp
+next_permutation(begin,end,cmp);
+prev_permutation(begin,end,cmp);
+```
+
+返回值为bool类型，失败为false
+
+##### int
+
+```cpp
+int a[]={1,2,3,4,5};
+next_permutation(a,a+5);
+```
+
+##### string
+
+```cpp
+string s="abcde";
+next_permutation(s.begin(),s.end());
+```
 
 ### 二分查找 (algorithm)
 
@@ -356,7 +377,7 @@ m["Bob"]=98;//可以读也可以写
 ```cpp
 vector<int> v;
 vector<int> vv(maxSize,defaultValue);
-multiset<int>::iterator it;
+vector<int>::iterator it;
 
 int a[]={1,2,3,4,5};
 vector<int> va(i+2,i+4);
