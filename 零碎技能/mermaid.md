@@ -133,7 +133,7 @@ section 里程碑 0.2
 section 里程碑 0.3
 功能测试            :       p6, after p3, 5d
 上线               :       p7, after p6, 2d
-交付               :       p8, afterp7, 2d
+交付               :       p8, after p7, 2d
 ```
 
 ```
@@ -236,7 +236,7 @@ graph LR
     D -.no.-> C
     E --> F(吃饭)
 ```
- 
+
 
 ​    样式流程图   
 
