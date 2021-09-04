@@ -392,7 +392,7 @@ pair<set<int>::iterator, bool> result=a.insert(in);
 a.size();//个数
 ```
 
-pair模板
+## pair模板
 
 ```cpp
 pair<T1,T2>;
