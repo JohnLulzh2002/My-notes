@@ -53,6 +53,36 @@ struct Bit{
 };
 ```
 
+## 可变参数 (stdarg.h)
+
+声明函数时，末尾用省略号`...`表示可变数量的参数
+
+```c
+int printf(const char* format, ...);
+```
+
+头文件`stdarg.h`定义了一些宏，可以操作可变参数。
+
+1. `va_list`：数据类型，定义一个可变参数对象。它必须在操作可变参数时，首先使用。
+2. `va_start`：函数，初始化可变参数对象。接受两个参数，第一个是可变参数对象，第二个是原始函数里面，可变参数之前的那个参数，用来为可变参数定位。
+3. `va_arg`：函数，取出当前那个可变参数，每次调用后，内部指针就会指向下一个可变参数。接受两个参数，第一个是可变参数对象，第二个是当前可变参数的类型。
+4. `va_end`：函数，清理可变参数对象。
+
+```c
+double average(int i, ...) {
+  double total = 0;
+  va_list ap;
+  va_start(ap, i);
+  for (int j = 1; j <= i; ++j) {
+    total += va_arg(ap, double);
+  }
+  va_end(ap);
+  return total / i;
+}
+```
+
+示例中，`va_list ap`定义`ap`为可变参数对象，`va_start(ap, i)`将参数`i`后面的参数统一放入`ap`，`va_arg(ap, double)`用来从`ap`依次取出一个参数，并且指定该参数为 double 类型，`va_end(ap)`用来清理可变参数对象。
+
 # C++
 
 ## 比C语言新增的零碎用法
@@ -70,6 +100,16 @@ int&a=b;
 ### 缺省参数
 
 注意重载和缺省同时用时，可能产生二义性，编译出错
+
+### 类型推导
+
+```cpp
+auto j=i;
+decltype(i) j;
+```
+
+
+
 
 ## 动态内存分配
 
