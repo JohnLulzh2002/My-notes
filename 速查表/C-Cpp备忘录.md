@@ -308,9 +308,9 @@ void Class::f() const{}
 class C{
 private:
     int t;
-friend void f(C obj);
+	friend void f(C obj);
 }
-void f(C obj){obj.t++;}
+void f(C &obj){obj.t++;}
 ```
 
 友元关系不传递，不继承
