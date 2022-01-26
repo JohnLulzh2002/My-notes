@@ -18,14 +18,12 @@ Scanner对象方便输入，读取对应的类型：`scanner.nextLine()` / `next
 
 判断引用类型的变量内容是否相等，使用s1.equals(s2)
 
----
-
 switch匹配字符串时，是比较内容相等
 
 Java12：switch表达式，没有fall-through，可以直接返回值
 
 ```java
- String fruit = "apple";
+String fruit = "apple";
 int opt = switch (fruit) {
     case "apple" ->{
         System.out.println(1);
@@ -54,3 +52,34 @@ for() for(){
 out:
 ```
 
+---
+
+数组排序并输出
+
+```java
+import java.util.Arrays;
+int[] a = { 2, 7, 3, 8, 6 };
+Arrays.sort(a);
+System.out.println(Arrays.toString(a));
+```
+
+降序
+
+```java
+import java.util.Arrays;
+import java.util.Collections;
+Arrays.sort(a, Collections.reverseOrder());
+```
+
+引用类型排序，修改的是指针指向
+
+二维数组
+
+```java
+import java.util.Arrays;
+int[][] ns = {
+    { 1, 2, 3 },
+    { 4, 5, 6 }
+};
+System.out.println(Arrays.deepToString(ns));
+```
