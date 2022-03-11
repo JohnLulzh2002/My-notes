@@ -28,7 +28,7 @@
 |类型|max|approx|
 |-|-|-|
 |char|127|1.2e2|
-|short|32767|3.2e6|
+|short|32767|3.2e5|
 |unsigned short|65535|6.5e5|
 |int|2147483647|2.1e9|
 |unsigned int|4294967295|4.2e9|
@@ -155,6 +155,13 @@ double average(int i, ...) {
 # C++
 
 ## 比C语言新增的零碎用法
+
+### cin/cout提速
+
+```cpp
+ios::sync_with_stdio(false);
+cin.tie(0);
+```
 
 ### 引用
 
