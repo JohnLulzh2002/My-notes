@@ -396,10 +396,12 @@ void f(C &obj){obj.t++;}
 ## sort (algorithm)
 
 ```cpp
-sort(a+n1,a+n2,cmp());//from a[n1] to a[n2-1]
+sort(a+n1,a+n2);//from a[n1] to a[n2-1]
 ```
 
-现成的比较函数
+## 比较函数
+
+现成的
 
 | 名称          | 功能描述 |
 | ------------- | -------- |
@@ -410,22 +412,41 @@ sort(a+n1,a+n2,cmp());//from a[n1] to a[n2-1]
 | less_equal    | 小于等于 |
 | greater_equal | 大于等于 |
 
-用法
-
 ```cpp
-greater<int>()
+sort(a,a+n,greater<int>());
 ```
 
-也可自定义比较函数
+仿函数
 
 ```cpp
 struct cmp{
     bool operator()(const T & a, const T & b)const{
-        //a必须在b前面，则ture
-        //相等属于false的情况
+        return a.b<b.b;
     }
 };
+sort(a,a+n,cmp());
 ```
+
+函数指针
+
+```cpp
+bool cmp(const T&a,const T&b)
+{return a.b<b.b;}
+sort(a,a+n,cmp);
+```
+
+重载小于号(不用定义比较函数)
+
+```cpp
+struct node{
+	int key,value;
+	bool operator<(const node&b)const
+	{return key<b.key;}
+}
+sort(a,a+n);
+```
+
+
 
 ## 全排列 (algorithm)
 
@@ -595,7 +616,17 @@ for(it=v.begin();it!=v.end();it++)
 改 (algorithm)
 
 ```cpp
-#include<algorithm>
 reverse(v.begin(),v.end());
 sort(v.begin(),v.end());
+```
+
+## 优先队列 (queue)
+
+```cpp
+priority_queue <int,vector<int>,greater<int> > q;//无需#include<vector>
+q.size();	//元素个数
+q.empty();	//是否为空，空则返回1，否则返回0
+q.push(k);	//插入k
+q.pop();	//删掉第一个元素
+q.top();	//返回第一个元素
 ```
