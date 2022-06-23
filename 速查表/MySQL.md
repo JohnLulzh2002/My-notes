@@ -44,6 +44,7 @@ mysqld --console
 
 ```powershell
 mysqladmin -uroot shutdown
+net stop mysql
 ```
 
 # 设置用户
