@@ -64,7 +64,16 @@
 |15|=|
 |16|,|
 
+## memset
+
+高维数组都一样
+
+```c
+memset(a,0,sizeof(a));
+```
+
 ## 文件操作
+
 ```c
 //单个文件：
 freopen("in.txt","r",stdin);
@@ -625,3 +634,46 @@ q.push(k);	//插入k
 q.pop();	//删掉第一个元素
 q.top();	//返回第一个元素
 ```
+
+## 双端队列 (deque)
+
+```cpp
+deque<int> d;
+deque<int> d(10,5);//初始10个5
+int a[]={1,2,3};
+deque<int> d(a,a+3);
+d.size();
+d.front();		//第一个元素的引用
+d.back();		//最后一个元素的引用
+d.push_front();	//头部添加元素
+d.pop_front();	//移除头部元素
+```
+
+## 双向链表(list)
+
+初始化
+
+```cpp
+ list<int> l;
+ list<int> l(10);	//十个元素,默认为0
+ list<int> l(10,4);	//十个元素,默认为4
+```
+
+插入
+
+```cpp
+  l.push_back(10);	//尾部插入
+  l.push_front(11);	//首部插入
+  l.insert(it,8);	//在迭代器的位置插入新元素(不会覆盖)
+```
+
+遍历
+
+```cpp
+ list<int>::iterator it;
+ for(it=l.begin();it!=l.end();it++);
+ //反向遍历
+ list<int>::reverse_iterator rit;
+ for(rit=l.rbegin();rit!=l.rend();rit++);
+```
+

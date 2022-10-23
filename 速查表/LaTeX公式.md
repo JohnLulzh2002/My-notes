@@ -158,7 +158,7 @@
 | Σ    | `\Sigma`   | σ               | `\sigma`                 |
 | T    | `T`        | τ               | `\tau`                   |
 | Υ    | `\Upsilon` | υ               | `\upsilon`               |
-| Φ    | `\Phi`     | ϕ               | `\phi` `\varphi`         |
+| Φ    | `\Phi`     | ϕ $\varphi$     | `\phi` `\varphi`         |
 | X    | `X`        | χ               | `\chi`                   |
 | Ψ    | `\Psi`     | ψ               | `\psi`                   |
 | Ω    | `\v`       | ω               | `\omega`                 |

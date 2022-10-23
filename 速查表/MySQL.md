@@ -26,7 +26,7 @@ net start mysql
 mysql -h 主机名 -u 用户名 -p
 ```
 
-如果我们要登录本机的 MySQL 数据库，只需要输入以下命令即可：
+登录本机的 MySQL
 
 ```powershell
 mysql -u root -p
@@ -70,6 +70,12 @@ mysql> SELECT host, user, password FROM user WHERE user = 'guest';
 +-----------+---------+------------------+
 | localhost | guest | 6f8c114b58f2ce9e |
 +-----------+---------+------------------+
+```
+
+改密码
+
+```mysql
+ALTER USER USER() IDENTIFIED BY '123456';
 ```
 
 # 管理
