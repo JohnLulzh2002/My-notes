@@ -1,5 +1,121 @@
 # C语言
 
+## 编译(gcc)
+
+![compile](compile.png)
+
+```shell
+gcc hello.c -o hello.exe
+```
+
+|后缀|描述|后缀|描述|
+|-|-|-|-|
+|`.c`|C源文件|`.s/.S`|汇编语言源文件|
+|`.C/.cc/.cxx/.cpp`|C++源文件|`.o/.obj`|目标文件|
+| `.h`               | 头文件           |`.a/.lib`|静态库|
+|`.i/.ii`|预处理过的源文件|`.so/.dll`|动态库|
+
+### 多文件项目
+
+|关键字|生命周期|作用域|
+|-|-|-|
+|extern|静态（程序结束后释放）(栈区)|整个程序|
+|static|静态（程序结束后释放）(栈区)|单个源文件|
+|auto,register|函数调用（调用结束后释放）(静态数据区)|无|
+
+#### 编译
+
+```c
+// File a.c
+#include <stdio.h>
+int add(int, int);
+int main(void){
+  printf("%d\n",add(2,3));
+}
+```
+
+```c
+// File b.c
+int add(int x, int y) {
+  return x + y;
+}
+```
+
+```shell
+gcc -o foo a.c b.c
+gcc -o foo.exe *.c	#更省事的写法
+```
+
+#### 头文件
+
+使用`.h`文件，复用函数原型
+设置条件判断宏，以避免重复加载
+
+```c
+// File bar.h
+#ifndef BAR_H
+  #define BAR_H
+  int add(int, int);
+#endif
+```
+
+在`a.c`中添加
+
+```c
+#include "bar.h"
+```
+
+`b.c`里面也可以加载这个头文件，这样可以让编译器验证，函数原型与函数定义是否一致
+
+编译命令不变
+
+#### 静态链接库
+
+用ar将目标文件变成库(后缀是`.a`还是`.lib`都可以)
+然后进行静态链接(`-L`指定libmylib.a的位置)
+
+```bash
+gcc -c mylib.c -o mylib.o
+ar -rc libmylib.a mylib.o
+gcc main.c -o 1.exe -lmylib -L.
+```
+
+#### 动态链接库(静态调用)
+
+```shell
+gcc -c mylib.c -o mylib.o -fPIC
+gcc -o mylib.dll mylib.o -shared
+gcc main.c -o 2.exe -lmylib -L.
+```
+
+然后把`2.exe`和`mylib.dll`放在同一目录下即可，修改dll时无需重新编译exe
+
+`nm`可以查看当前 .lib 文件内都有哪些符号（函数名）  
+
+### 其他编译选项
+
+|选项|解释|选项|解释|
+|-|-|-|-|
+|`-o <file>`|指定输出文件|`-I`|指定头文件的包含路径|
+| `-std=c99`| 指定要用的语言标准|`-L`|指定链接库的包含路径|
+|`-E`|预处理后停止|`-shared`|创建共享库/动态库|
+|`-S`|编译后停止|`-static`|使用静态链接|
+|`-c`|汇编后停止|`--help`|显示帮助信息|
+|`-pie`|创建动态链接、位置无关的可执行文件|`--version`|显示编译器版本信息|
+|`-fexec-charset=GBK`|以GBK输出|`-finput-charset=UTF-8`|以UTF-8处理源文件|
+|`-g`|产生调试信息|`-O2`|优化可执行代码|
+| `-v`| 显示编译的每个阶段使用的命令|`-###`|与 -v 类似，但引用的选项和命令不执行|
+|`-pass-exit-codes`|从一个阶段以最高错误代码退出|`-Wa,<options>`|将逗号分隔的`<options>`传递给汇编器|
+|`--target-help`|显示特定于目标的命令行选项|`-Wp,<options>`|将逗号分隔的`<options>`传递给预处理器|
+| `-dumpmachine`| 显示编译器的目标处理器|`-Wl,<options>`|将逗号分隔的`<options>`传递给链接器|
+| `-print-search-dirs`| 显示编译器搜索路径中的目录|`-Xassembler <arg>`|将`<arg>`传递给汇编器|
+| `-print-libgcc-file-name` | 显示编译器配套库的名称|`-Xpreprocessor <arg>`|将`<arg>`传递给预处理器|
+| `-pipe`| 使用管道而不是中间文件|`-Xlinker <arg>`|将`<arg>`传递给链接器|
+| `-time`| 为每个子流程的执行计时|`-save-temps`|不用删除中间文件|
+| `-specs=<file>`| 使用`<file>`的内容覆盖内置规范|`-save-temps=<arg>`|不用删除指定的中间文件|
+| `--sysroot=<directory>`| 使用`<directory>`作为头文件和库的根目录 |`-no-canonical-prefixes`|构建其他 gcc 组件的相对前缀时，不规范化路径|
+| `-B <directory>`| 将`<directory>`添加到编译器的搜索路径|||
+
 ## 常用数据
 
 ### 时间复杂度
@@ -18,55 +134,37 @@
 |windows|5e8|
 |128MB|3e7|
 
-### 各类型的最大最小值
+### 类型
 
-|类型|max|approx|
-|-|-|-|
-|char|127|1.2e2|
-|short|32767|3.2e5|
-|unsigned short|65535|6.5e5|
-|int|2147483647|2.1e9|
-|unsigned int|4294967295|4.2e9|
-|long|2147483647|2.1e9|
-|long long|9223372036854775807|9.2e18|
-|unsigned long long|1844674407370955161|1.8e19|
-
-### 各类型的字节数
-
-|类型|字节数|
-|-|-|
-|char|1|
-|short|2|
-|int、long|4|
-|float|4|
-|double|8|
-|long long|8|
-|void*(指针)|8|
+|类型|max|approx|字节数|
+|-|-|-|-|
+|char|127|1.2e2|1|
+|short|32767|3.2e5|2|
+|unsigned short|65535|6.5e5|2|
+|int、long|2147483647|2.1e9|4|
+|unsigned int|4294967295|4.2e9|4|
+|long long|9223372036854775807|9.2e18|8|
+|unsigned long long|1844674407370955161|1.8e19|8|
+|float| 2^128|3.40e38|4|
+|double| 2^1024|1.79e308|8|
+|void*(指针)|||8|
 
 ### 运算符优先级
 
-|级别|运算符|
-|-|-|
-|1|[ ]、()函数调用、->、.成员访问、i++、i--|
-|2|++i、--i、&地址、*取值、+正、-负、~、!、sizeof|
-|3|强制类型转换|
-|4|*乘、/除、%求余|
-|5|+加、-减|
-|6|<<、>>|
-|7|<、<=、>、>=|
-|8|==、!=|
-|9|&|
-|10|∧|
-|11|\||
-|12|&&|
-|13|\|\||
-|14|? :|
-|15|=|
-|16|,|
+|级别|运算符|级别|运算符|
+|-|-|-|-|
+|1|[ ]、()函数调用、->、.成员访问、i++、i--|9|&|
+|2|++i、--i、&地址、*取值、+正、-负、~、!、sizeof|10|∧|
+|3|强制类型转换|11|\||
+|4|*乘、/除、%求余|12|&&|
+|5|+加、-减|13|\|\||
+|6|<<、>>|14|? :|
+|7|<、<=、>、>=|15|=|
+|8|==、!=|16|,|
 
 ## memset
 
-高维数组都一样
+高维数组用法不变，只要给出总个数
 
 ```c
 memset(a,0,sizeof(a));
@@ -107,6 +205,13 @@ clearerr(FILE*);//错误标志归零（rewind、输入输出也可以）
 main(int argc, char* argv[])
 //argv[]={"str1","str2"}
 ```
+## 环境变量 (stdlib.h)
+
+```c
+#include <stdlib.h>
+getenv("HOME");
+```
+
 ## typedef数组
 
 ```c
@@ -158,7 +263,7 @@ double average(int i, ...) {
 
 # C++
 
-## 比C语言新增的零碎用法
+## 杂项
 
 ### cin/cout提速
 
@@ -187,8 +292,6 @@ int&a=b;
 auto j=i;
 decltype(i) j;
 ```
-
-
 
 
 ## 动态内存分配
