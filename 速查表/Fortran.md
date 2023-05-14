@@ -142,7 +142,7 @@ rewind(<unit>)	!回到文件开头
 backspace(<unit>)!回上一行
 ```
 
-##  Iinternal read/write
+##  Internal read/write
 
 Read and write directly from and to variables.
 
