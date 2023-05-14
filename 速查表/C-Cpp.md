@@ -597,6 +597,86 @@ T* upper_bound(a+n1,a+n2,value,cmp());//返回值指向第一个>value的元素�
 //在上一个案例中，假如搜索3,返回值指向a[4]
 ```
 
+## pair模板
+
+```cpp
+pair<T1,T2>;
+//same as
+struct{
+    T1 first;
+    T2 second;
+};
+```
+
+```cpp
+p=make_pair(a,b);
+//same as
+struct{
+    T1 first;
+    T2 second;
+}p;
+p.first=a;
+p.second=b;
+```
+
+## 定长数组 (array)
+
+类似C风格数组，长度为常量表达式
+
+```c++
+array<int,5> a{};//初始化，不填的补0
+a.fill(val);	//赋值给每个元素
+a.data();		//指向首元素的指针
+a.begin(); a.rbegin();//迭代器
+a.front(); a.back();  //引用
+```
+
+## 变长数组 (vector)
+
+作函数参数时，必须用引用
+
+```cpp
+vector<int> v;
+vector<int> vv(maxSize,defaultValue);
+vector<int>::iterator it;
+
+int a[]={1,2,3,4,5};
+vector<int> va(a+2,a+4);
+```
+
+增
+
+
+```cpp
+v.push_back(a);
+v.insert(v.begin()+2,a);
+```
+
+删
+
+```cpp
+v.erase(v.begin()+2);
+v.erase(v.begin()+2,v.begin()+4);
+v.pop_back()
+v.clear();
+```
+
+查
+
+```cpp
+v.size();//个数
+cout<< v[1] <<endl;
+for(it=v.begin();it!=v.end();it++)
+    cout<<*it<<endl;
+```
+
+改 (algorithm)
+
+```cpp
+reverse(v.begin(),v.end());
+sort(v.begin(),v.end());
+```
+
 ## 平衡二叉树 (set)
 
 ### multiset (可以重复)
@@ -636,28 +716,6 @@ pair<set<int>::iterator, bool> result=a.insert(in);
 a.size();//个数
 ```
 
-## pair模板
-
-```cpp
-pair<T1,T2>;
-//same as
-struct{
-    T1 first;
-    T2 second;
-};
-```
-
-```cpp
-p=make_pair(a,b);
-//same as
-struct{
-    T1 first;
-    T2 second;
-}p;
-p.first=a;
-p.second=b;
-```
-
 ## 映射 (map)
 
 ### multimap
@@ -680,52 +738,6 @@ m["Bob"]=98;//可以读也可以写
 ```
 
 类似set,insert()有返回值,其.second表明是否成功
-
-## 变长数组 (vector)
-
-作函数参数时，必须用引用
-
-```cpp
-vector<int> v;
-vector<int> vv(maxSize,defaultValue);
-vector<int>::iterator it;
-
-int a[]={1,2,3,4,5};
-vector<int> va(i+2,i+4);
-```
-
-增
-
-
-```cpp
-v.push_back(a);
-v.insert(v.begin()+2);
-```
-
-删
-
-```cpp
-v.erase(v.begin()+2);
-v.erase(v.begin()+2,v.begin()+4);
-v.pop_back()
-v.clear();
-```
-
-查
-
-```cpp
-v.size();//个数
-cout<< v[1] <<endl;
-for(it=v.begin();it!=v.end();it++)
-    cout<<*it<<endl;
-```
-
-改 (algorithm)
-
-```cpp
-reverse(v.begin(),v.end());
-sort(v.begin(),v.end());
-```
 
 ## 优先队列 (queue)
 
