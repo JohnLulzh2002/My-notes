@@ -153,3 +153,11 @@ ffmpeg -i input.mp4
     output.mp4
 
 两个输入文件，一个是封面图片cover.jpg，另一个是音频文件input.mp3。-loop 1参数表示图片无限循环，-shortest参数表示音频文件结束，输出视频就结束。
+
+## 检查视频完整性
+
+输出错误报告，为空则说明没问题。
+
+	ffmpeg.exe -v error -i in.mp4 -f null - >error.log 2>&1
+
+参数同上，调用`ffprobe`则只检查元数据，速度快。
