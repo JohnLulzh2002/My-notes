@@ -21,31 +21,31 @@ SELECT DISTINCT vend_id FROM Products;
 
 ```sql
 SELECT prod_name FROM Products
-LIMIT 5;
+    LIMIT 5;
 ```
 
 取 6~8 行
 
 ```sql
 SELECT prod_name FROM Products
-LIMIT 3 OFFSET 5;
+    LIMIT 3 OFFSET 5;
 -- MySQL、 MariaDB 和 SQLite
 SELECT prod_name FROM Products
-LIMIT 5,3;
+    LIMIT 5,3;
 ```
 
 `SQL Server`
 
 ```sql
 SELECT prod_name FROM Products
-TOP 5;
+    TOP 5;
 ```
 
 ## 排序 ORDER BY
 
 ```sql
 SELECT prod_name FROM Products
-ORDER BY prod_name;
+    ORDER BY prod_name;
 ```
 
 可以用非检索的列排序。
@@ -54,7 +54,7 @@ ORDER BY prod_name;
 
 ```sql
 SELECT col_c FROM table_a
-ORDER BY col_a,col_b;
+    ORDER BY col_a,col_b;
 ```
 
 按相对列位置
@@ -62,13 +62,39 @@ ORDER BY col_a,col_b;
 ```sql
 -- 按 col_b 和 col_c 排序
 SELECT col_a,col_b,col_c FROM Products
-ORDER BY 2,3;
+    ORDER BY 2,3;
 ```
 降序
 
 ```sql
 SELECT * FROM Products
-ORDER BY prod_price DESC, prod_name;
+    ORDER BY prod_price DESC, prod_name;
+```
+
+## 过滤 WHERE
+
+```sql
+SELECT prod_name FROM Products
+    WHERE  vend_id != 'DLL01' AND NOT prod_price > 5;
+```
+
+先 `WHERE` 再 `ORDER BY`
+
+| 操作符  | 说明   | 操作符  | 说明         |
+| ------- | ------ | ------- | ------------ |
+| =       | 等于   | <       | 小于         |
+| <>      | 不等于 | <=      | 小于等于     |
+| !=      | 不等于 | !<      | 不小于       |
+| IS NULL | 为空值 | BETWEEN 5 AND 8 | 在[5,8]之间 |
+
+`OR` 操作符前面满足就会短路。
+
+先 `AND` 后 `OR` 。用圆括号消歧义。
+
+`IN` 操作符比一组 `OR` 更快；可以包含其他 `SELECT` 语句，动态地建立 `WHERE` 子句
+
+```sql
+WHERE vend_id IN ('DLL01','BRS01')
 ```
 
 # 管理数据库
