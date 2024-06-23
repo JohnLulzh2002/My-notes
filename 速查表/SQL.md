@@ -17,7 +17,7 @@ SELECT DISTINCT vend_id FROM Products;
 
 ### 限制输出数量
 
-`MySQL`、 `MariaDB`、 `PostgreSQL` 或 `SQLite`
+*`MySQL`、 `MariaDB`、 `PostgreSQL` 或 `SQLite`*
 
 ```sql
 SELECT prod_name FROM Products
@@ -34,7 +34,7 @@ SELECT prod_name FROM Products
     LIMIT 5,3;
 ```
 
-`SQL Server`
+*`SQL Server`*
 
 ```sql
 SELECT prod_name FROM Products
@@ -95,6 +95,65 @@ SELECT prod_name FROM Products
 
 ```sql
 WHERE vend_id IN ('DLL01','BRS01')
+```
+
+## 通配符过滤 LIKE
+
+百分号 `%` 匹配0或多个任意字符。
+
+```sql
+SELECT prod_id, prod_name FROM Products
+    WHERE prod_name LIKE '%bean bag%';
+```
+
+默认不区分大小写。
+
+字符串末尾可能填充空格。需要在末尾加 `%` 。
+
+`'%'`不会匹配 `NULL` 。
+
+下划线 `_` 匹配一个任意字符。*DB2 不支持*
+
+方括号 `[]` 匹配集合中的一个字符。*仅 `SQL Server`*
+
+```sql
+'[JM]%'
+```
+
+## 计算字段
+
+### 拼接
+
+|DBMS|操作符|
+| - | - |
+|SQL Server|+|
+|DB2、Oracle、PostgreSQL 和 SQLite|\|\||
+|MySQL 和 MariaDB|Concat函数|
+
+```sql
+SELECT vend_name+'('+vend_country+')' FROM Vendors;
+```
+
+如果末尾被填充空格，用 `RTRIM` 或 `TRIM` 函数去除。
+
+### 别名（导出列） AS
+
+```sql
+SELECT Concat(vend_name,'(',vend_country,')')
+    AS vend_title FROM Vendors;
+```
+
+### 算术计算 +-*/
+
+```sql
+SELECT quantity*item_price AS expanded_price
+    FROM OrderItems
+```
+
+### 测试计算（省略 `FROM` ）
+
+```sql
+SELECT Trim(' abc ');
 ```
 
 # 管理数据库
