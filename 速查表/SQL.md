@@ -151,6 +151,8 @@ SELECT quantity*item_price AS expanded_price
     FROM OrderItems
 ```
 
+`%` 取余
+
 ### 测试计算（省略 `FROM` ）
 
 ```sql
