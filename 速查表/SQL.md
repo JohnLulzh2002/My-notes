@@ -12,7 +12,7 @@ SELECT * FROM table_name;
 作用于所有的列，都一样才合并
 
 ```sql
-SELECT DISTINCT vend_id FROM Products;
+SELECT DISTINCT column1,column2 FROM Products;
 ```
 
 ### 限制输出数量
@@ -64,6 +64,7 @@ SELECT col_c FROM table_a
 SELECT col_a,col_b,col_c FROM Products
     ORDER BY 2,3;
 ```
+
 降序
 
 ```sql
@@ -80,11 +81,11 @@ SELECT prod_name FROM Products
 
 先 `WHERE` 再 `ORDER BY`
 
-| 操作符  | 说明   | 操作符  | 说明         |
-| ------- | ------ | ------- | ------------ |
-| =       | 等于   | <       | 小于         |
-| <>      | 不等于 | <=      | 小于等于     |
-| !=      | 不等于 | !<      | 不小于       |
+| 操作符  | 说明   | 操作符          | 说明        |
+| ------- | ------ | --------------- | ----------- |
+| =       | 等于   | <               | 小于        |
+| <>      | 不等于 | <=              | 小于等于    |
+| !=      | 不等于 | !<              | 不小于      |
 | IS NULL | 为空值 | BETWEEN 5 AND 8 | 在[5,8]之间 |
 
 `OR` 操作符前面满足就会短路。
@@ -124,11 +125,11 @@ SELECT prod_id, prod_name FROM Products
 
 ### 拼接
 
-|DBMS|操作符|
-| - | - |
-|SQL Server|+|
-|DB2、Oracle、PostgreSQL 和 SQLite|\|\||
-|MySQL 和 MariaDB|Concat函数|
+| DBMS                              | 操作符     |
+| --------------------------------- | ---------- |
+| SQL Server                        | +          |
+| DB2、Oracle、PostgreSQL 和 SQLite | \|\|       |
+| MySQL 和 MariaDB                  | Concat函数 |
 
 ```sql
 SELECT vend_name+'('+vend_country+')' FROM Vendors;
@@ -156,12 +157,61 @@ SELECT quantity*item_price AS expanded_price
 SELECT Trim(' abc ');
 ```
 
+## 函数
+
+### 文本
+
+| 函数   | 功能       | 函数    | 功能             |
+| ------ | ---------- | ------- | ---------------- |
+| LEFT   | 取左侧n个字符 | LENGTH  | 字符串长度       |
+| LOWER  | 小写       | LTRIM   | 去除左侧空格     |
+| SUBSTR | 从第n个字符起取子串     | SOUNDEX | 字符串的语音表示 |
+
+### 日期和时间
+
+*MySQL*
+
+```sql
+SELECT order_num FROM orders
+	WHERE EXTRACT(year FROM order_date) = 2020;
+SELECT order_num FROM Orders
+    WHERE order_date BETWEEN to_date('2020-01-01', 'yyyy-mm-dd')
+    AND to_date('2020-12-31', 'yyyy-mm-dd');
+```
+
+### 数值处理
+
+| 函数 | 功能 | 函数 | 功能 |
+| - | - | - | - |
+| ABS | 绝对值 | EXP | 指数 |
+| SQRT | 平方根 | PI | $\pi$ |
+| SIN | 正弦 | TAN | 正切 |
+
+## 聚集函数
+
+| 函数 | 功能 | 函数 | 功能 |
+| - | - | - | - |
+| AVG | 平均值 | COUNT | 计数 |
+| MAX | 最大值 | SUM | 求和 |
+
+`AVG` 忽略 `NULL`
+
+`COUNT(*)` 不忽略 `NULL` ； `COUNT(column)` 忽略 `NULL`
+
+可以只计算不同的值（DISTINCT）
+
+```sql
+-- 平均值，不加权
+SELECT AVG(DISTINCT prod_price)
+    AS avg_price FROM Products;
+```
+
 # 管理数据库
 
 `USE 数据库名 `:
 选择要操作的Mysql数据库，使用该命令后所有Mysql命令都只针对该数据库。
 
-`SHOW DATABASES`: 
+`SHOW DATABASES`:
 列出 MySQL 数据库管理系统的数据库列表。
 
 `SHOW TABLES`:
