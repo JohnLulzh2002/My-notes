@@ -1,6 +1,4 @@
-# 检索
-
-## SELECT
+# 检索 SELECT
 
 ```sql
 SELECT column1,column2 FROM table_name;
@@ -206,6 +204,52 @@ SELECT order_num FROM Orders
 -- 平均值，不加权
 SELECT AVG(DISTINCT prod_price)
     AS avg_price FROM Products;
+```
+
+## 分组 GROUP BY
+
+```sql
+SELECT vend_id, COUNT(*) AS num_prods
+    FROM Products GROUP BY vend_id;
+```
+
+可以指定多列，嵌套分组。
+
+可以是表达式，但不能是聚集函数。
+
+通常不允许变长数据类型。
+
+`NULL` 会分为一组。
+
+`GROUP BY` 在 `WHERE` 和 `ORDER BY` 之间。
+
+不保证顺序。可以分组后再 `ORDER BY` 排序。
+
+### 过滤分组 HAVING
+
+`WHERE` 在分组前过滤, `HAVING` 在分组后过滤。
+
+```sql
+SELECT cust_id, COUNT(*) AS orders FROM Orders
+    GROUP BY cust_id HAVING COUNT(*)>=2;
+```
+
+## 子查询
+
+只能是单列。性能较差。
+
+```sql
+SELECT cust_id FROM Orders WHERE order_num
+    IN (SELECT order_num FROM OrderItems WHERE prod_id = 'RGAN01');
+```
+
+作为计算字段
+
+```sql
+SELECT cust_name,
+    (SELECT COUNT(*) FROM Orders
+    WHERE Orders.cust_id = Customers.cust_id) AS orders
+FROM Customers;
 ```
 
 # 管理数据库
