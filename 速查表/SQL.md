@@ -19,31 +19,31 @@ SELECT DISTINCT column1,column2 FROM Products;
 
 ```sql
 SELECT prod_name FROM Products
-    LIMIT 5;
+LIMIT 5;
 ```
 
 取 6~8 行
 
 ```sql
 SELECT prod_name FROM Products
-    LIMIT 3 OFFSET 5;
+LIMIT 3 OFFSET 5;
 -- MySQL、 MariaDB 和 SQLite
 SELECT prod_name FROM Products
-    LIMIT 5,3;
+LIMIT 5,3;
 ```
 
 *`SQL Server`*
 
 ```sql
 SELECT prod_name FROM Products
-    TOP 5;
+TOP 5;
 ```
 
 ## 排序 ORDER BY
 
 ```sql
 SELECT prod_name FROM Products
-    ORDER BY prod_name;
+ORDER BY prod_name;
 ```
 
 可以用非检索的列排序。
@@ -52,7 +52,7 @@ SELECT prod_name FROM Products
 
 ```sql
 SELECT col_c FROM table_a
-    ORDER BY col_a,col_b;
+ORDER BY col_a,col_b;
 ```
 
 按相对列位置
@@ -60,21 +60,21 @@ SELECT col_c FROM table_a
 ```sql
 -- 按 col_b 和 col_c 排序
 SELECT col_a,col_b,col_c FROM Products
-    ORDER BY 2,3;
+ORDER BY 2,3;
 ```
 
 降序
 
 ```sql
 SELECT * FROM Products
-    ORDER BY prod_price DESC, prod_name;
+ORDER BY prod_price DESC, prod_name;
 ```
 
 ## 过滤 WHERE
 
 ```sql
 SELECT prod_name FROM Products
-    WHERE  vend_id != 'DLL01' AND NOT prod_price > 5;
+WHERE  vend_id != 'DLL01' AND NOT prod_price > 5;
 ```
 
 先 `WHERE` 再 `ORDER BY`
@@ -102,7 +102,7 @@ WHERE vend_id IN ('DLL01','BRS01')
 
 ```sql
 SELECT prod_id, prod_name FROM Products
-    WHERE prod_name LIKE '%bean bag%';
+WHERE prod_name LIKE '%bean bag%';
 ```
 
 默认不区分大小写。
@@ -139,14 +139,14 @@ SELECT vend_name+'('+vend_country+')' FROM Vendors;
 
 ```sql
 SELECT Concat(vend_name,'(',vend_country,')')
-    AS vend_title FROM Vendors;
+AS vend_title FROM Vendors;
 ```
 
 ### 算术计算 +-*/
 
 ```sql
 SELECT quantity*item_price AS expanded_price
-    FROM OrderItems
+FROM OrderItems
 ```
 
 `%` 取余
@@ -173,16 +173,18 @@ SELECT Trim(' abc ');
 
 ```sql
 SELECT order_num FROM orders
-	WHERE EXTRACT(year FROM order_date) = 2020;
+WHERE EXTRACT(year FROM order_date) = 2020;
+
 SELECT order_num FROM Orders
-    WHERE order_date BETWEEN to_date('2020-01-01', 'yyyy-mm-dd')
-    AND to_date('2020-12-31', 'yyyy-mm-dd');
+WHERE order_date BETWEEN '2020-01-01'
+AND '2020-12-31';
 ```
 
 ### 数值处理
 
 | 函数 | 功能 | 函数 | 功能 |
 | - | - | - | - |
+| ROUND | 四舍五入 | TRUNCATE | 截断到小数点后n位 |
 | ABS | 绝对值 | EXP | 指数 |
 | SQRT | 平方根 | PI | $\pi$ |
 | SIN | 正弦 | TAN | 正切 |
@@ -203,14 +205,14 @@ SELECT order_num FROM Orders
 ```sql
 -- 平均值，不加权
 SELECT AVG(DISTINCT prod_price)
-    AS avg_price FROM Products;
+AS avg_price FROM Products;
 ```
 
 ## 分组 GROUP BY
 
 ```sql
 SELECT vend_id, COUNT(*) AS num_prods
-    FROM Products GROUP BY vend_id;
+FROM Products GROUP BY vend_id;
 ```
 
 可以指定多列，嵌套分组。
@@ -231,7 +233,7 @@ SELECT vend_id, COUNT(*) AS num_prods
 
 ```sql
 SELECT cust_id, COUNT(*) AS orders FROM Orders
-    GROUP BY cust_id HAVING COUNT(*)>=2;
+GROUP BY cust_id HAVING COUNT(*)>=2;
 ```
 
 ## 子查询
@@ -240,7 +242,7 @@ SELECT cust_id, COUNT(*) AS orders FROM Orders
 
 ```sql
 SELECT cust_id FROM Orders WHERE order_num
-    IN (SELECT order_num FROM OrderItems WHERE prod_id = 'RGAN01');
+IN (SELECT order_num FROM OrderItems WHERE prod_id = 'RGAN01');
 ```
 
 作为计算字段
@@ -251,6 +253,63 @@ SELECT cust_name,
     WHERE Orders.cust_id = Customers.cust_id) AS orders
 FROM Customers;
 ```
+
+## 连接 JOIN
+
+### 叉连接 (cross join)
+
+连接会得到笛卡尔积，使用 `WHERE` 过滤。
+
+```sql
+SELECT vend_name, prod_name
+FROM Vendors, Products
+WHERE Vendors.vend_id = Products.vend_id;
+```
+
+### 内连接 (inner join)
+
+上述等值连接(equijoin)可以替换如下，更规范。
+
+```sql
+SELECT vend_name, prod_name FROM Vendors
+INNER JOIN Products ON Vendors.vend_id = Products.vend_id;
+```
+
+### 自连接 (self-join)
+
+使用表别名 `AS` 消歧义。
+
+```sql
+SELECT c1.cust_id, c1.cust_contact
+FROM Customers AS c1, Customers AS c2
+WHERE c1.cust_name = c2.cust_name
+AND c2.cust_contact = 'Jim Jones';
+```
+
+### 自然连接 (natural join)
+
+自动按两表中同名同类型等值连接，并不会产生重复列。
+
+```sql
+SELECT vend_name, prod_name FROM Vendors
+NATURAL JOIN Products;
+```
+
+### 外连接 (outer join)
+
+包含没有关联的行，用 `NULL` 填充。
+
+```sql
+SELECT Customers.cust_id, Orders.order_num
+FROM Customers
+LEFT OUTER JOIN Orders ON Customers.cust_id = Orders.cust_id;
+```
+
+#### 全外联结 (full outer join)
+
+取左右的并集。
+
+`MariaDB`、`MySQL` 和 `SQLite` 不支持。
 
 # 管理数据库
 
