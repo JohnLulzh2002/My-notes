@@ -311,6 +311,68 @@ LEFT OUTER JOIN Orders ON Customers.cust_id = Orders.cust_id;
 
 `MariaDB`、`MySQL` 和 `SQLite` 不支持。
 
+## 组合 UNION
+
+取并集。
+
+```sql
+SELECT cust_name, cust_contact FROM C1
+WHERE cust_state IN ('IL','IN','MI')
+UNION
+SELECT cust_name, cust_contact FROM C2
+WHERE cust_name = 'Fun4All';
+```
+
+必须包含相同的列，类型兼容。
+
+自动去重。用 `UNION ALL` 返回所有。
+
+`ORDER BY` 只能在最后，最多一次。
+
+# 增删改
+
+## 增
+
+```sql
+INSERT INTO table_name (column1,column2)
+VALUES (value1,value2);
+```
+
+可以不提供列名，按定义次序插入。
+
+可以直接插入 `SELECT` 的数据：
+
+```sql
+INSERT INTO Customers(cust_id,cust_contact)
+SELECT cust_id,cust_contact FROM CustNew;
+```
+
+复制表：
+
+```sql
+CREATE TABLE CustCopy AS SELECT * FROM Customers;
+-- SQL Server
+SELECT * INTO CustCopy FROM Customers;
+```
+
+## 删
+
+```sql
+DROP DATABASE database_name;
+DROP TABLE table_name;
+TRUNCATE TABLE table_name;
+DELETE FROM table_name WHERE some_column=some_value;
+ALTER TABLE table_name DROP INDEX index_name
+```
+
+## 改
+
+```sql
+UPDATE table_name
+SET column1=value1,column2=value2
+WHERE some_column=some_value;
+```
+
 # 管理数据库
 
 `USE 数据库名 `:
@@ -327,28 +389,3 @@ LEFT OUTER JOIN Orders ON Customers.cust_id = Orders.cust_id;
 
 `SHOW INDEX FROM 数据表`:
 显示数据表的详细索引信息，包括PRIMARY KEY（主键）。
-
-# 其他
-
-## 增
-
-```sql
-INSERT INTO table_name (column1,column2,column3,...) VALUES (value1,value2,value3,...);
-```
-
-## 删
-
-```sql
-DROP DATABASE database_name;
-DROP TABLE table_name;
-DELETE FROM table_name WHERE some_column=some_value;
-ALTER TABLE table_name DROP INDEX index_name
-```
-
-## 改
-
-```sql
-UPDATE table_name
-    SET column1=value1,column2=value2,...
-    WHERE some_column=some_value;
-```
