@@ -178,6 +178,8 @@ WHERE EXTRACT(year FROM order_date) = 2020;
 SELECT order_num FROM Orders
 WHERE order_date BETWEEN '2020-01-01'
 AND '2020-12-31';
+
+CURRENT_DATE()
 ```
 
 ### 数值处理
@@ -331,7 +333,7 @@ WHERE cust_name = 'Fun4All';
 
 # 增删改
 
-## 增
+## 增 INSERT INTO
 
 ```sql
 INSERT INTO table_name (column1,column2)
@@ -347,7 +349,39 @@ INSERT INTO Customers(cust_id,cust_contact)
 SELECT cust_id,cust_contact FROM CustNew;
 ```
 
-复制表：
+## 删
+
+```sql
+DROP DATABASE database_name;
+TRUNCATE TABLE table_name;
+DELETE FROM table_name WHERE some_column=some_value;
+ALTER TABLE table_name DROP INDEX index_name
+```
+
+## 改 UPDATE
+
+```sql
+UPDATE table_name
+SET column1=value1,column2=value2
+WHERE some_column=some_value;
+```
+
+# 创建和操纵表
+
+## 创建表 CREATE TABLE
+
+```sql
+CREATE TABLE Products(
+order_id   CHAR(10)     NOT NULL,
+order_num  INTEGER      NOT NULL DEFAULT 1,
+order_date DATETIME     NOT NULL,
+prod_name  CHAR(254)    ,
+prod_price DECIMAL(8,2) ,
+prod_desc  VARCHAR(100)
+);
+```
+
+### 复制表
 
 ```sql
 CREATE TABLE CustCopy AS SELECT * FROM Customers;
@@ -355,23 +389,36 @@ CREATE TABLE CustCopy AS SELECT * FROM Customers;
 SELECT * INTO CustCopy FROM Customers;
 ```
 
-## 删
+## 更新表 ALTER TABLE
 
 ```sql
-DROP DATABASE database_name;
+ALTER TABLE Vendors
+ADD vend_phone CHAR(20);
+
+ALTER TABLE Vendors
+DROP COLUMN vend_phone;
+```
+
+## 删除表 DROP TABLE
+
+```sql
 DROP TABLE table_name;
-TRUNCATE TABLE table_name;
-DELETE FROM table_name WHERE some_column=some_value;
-ALTER TABLE table_name DROP INDEX index_name
 ```
 
-## 改
+# 视图 VIEW
+
+虚拟的表，不包含数据。用法类似表格。
+许多 DBMS 禁止在视图中使用 `ORDER BY` 。
 
 ```sql
-UPDATE table_name
-SET column1=value1,column2=value2
-WHERE some_column=some_value;
+CREATE VIEW ProductCustomers AS
+SELECT cust_name, prod_id FROM Customers, Orders
+WHERE Customers.cust_id = Orders.cust_id
 ```
+
+# 存储过程 PROCEDURE
+
+类似 `BASIC` 语言的 `sub` 。使用较复杂，且各DBMS不兼容。
 
 # 管理数据库
 
