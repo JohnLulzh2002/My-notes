@@ -49,6 +49,8 @@ let str = System.Console.ReadLine()
 
 ## 流程控制
 
+### 分支
+
 ```fsharp
 if age > 65 
 then printfn "Senior"
@@ -60,6 +62,8 @@ let message = if age > 18 then "Adult" else "Child"
 ```
 
 `then` 和 `else` 需要返回同种类型
+
+### 循环
 
 ```fsharp
 let list = [1; 2; 3; 4; 5]
@@ -76,3 +80,26 @@ while not quit do
     let guess =int (System.Console.ReadLine())
     if guess = 11 then quit <- true
 ```
+
+## 函数
+
+### 定义
+
+```fsharp
+let add a b = a + b
+let add a b =
+    a+b
+let convert (a: string) : int = int a
+//传入传出 tuple
+let f (t: int * int) =
+    printfn $"{fst t} + {snd t}"
+    (fst t + 1, snd t + 1)
+f (1, 2)
+```
+
+### 组合与管道
+
+```fsharp
+let f a = f2 (f1 a)
+let f = f1 >> f2
+let f a = a |> f1 |> f2
