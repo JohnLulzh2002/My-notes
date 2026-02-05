@@ -103,3 +103,67 @@ f (1, 2)
 let f a = f2 (f1 a)
 let f = f1 >> f2
 let f a = a |> f1 |> f2
+```
+
+## 集合（数组）
+
+### List
+
+不可变。实现方式是链表。
+
+```fsharp
+let primes = [2; 3; 5]
+let cards = [
+  "Ace"
+  "King"
+  "Queen"
+]
+let numbers = [ 1 .. 5 ] //1 2 3 4 5
+let newList = 1 :: numbers//1 1 2 3 4 5
+let concatList = listA @ listB
+let primes1 = primes |> List.append [ 7; 11 ]
+primes.Item 1   //0起点，按下标访问
+```
+
+属性：
+
+- `Head`
+- `List.Empty`
+- `IsEmpty`
+- `Length`
+- `Tail` （除了首个元素的子序列）
+
+函数式操作
+
+```fsharp
+List.iter (fun x -> printfn $"{x}") primes
+List.map (fun person -> person.FirstName + person.LastName) people 
+List.filter (fun i -> i % 2 = 0) nums
+
+List.sort list
+List.sortBy (fun (s: string) -> s.Length) fruits
+let comparator a b=
+    if a>b then 1
+    elif a<b then -1
+    else 0
+List.sortWith comparator list
+
+List.find (fun x -> x % 2 = 0) list //找第一个为真的。没有就抛 KeyNotFoundException
+List.findIndex (fun x -> x % 2 = 0) list
+let found = list |> List.tryFind (fun item -> item = 3)
+match found with
+| Some value -> printfn "%i" value
+| None -> printfn "Not found"
+
+List.sum [1 .. 5]
+List.sumBy(fun item -> item.Cost) orderItems
+List.average [1.0;2.0] //要求 float
+```
+
+### Array
+
+定长 可变
+
+### Sequence
+
+使用时求值
